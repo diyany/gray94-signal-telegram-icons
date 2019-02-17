@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+
+dir_in = "svg"
+dir_out = File.expand_path("../ticons")
+ext_in = ".svg"
+ext_out = ".png"
+files = []
+errors = []
+
+
+Dir.foreach(dir_in) do |f|
+  files << File.basename(f, ".*") if File.extname(f).downcase == ext_in
+end
+
+
+files.each do |file|
+  file_in = "#{dir_in}/#{file}#{ext_in}"
+  file_out = "#{dir_out}/._#{file}#{ext_out}"
+  puts_string =  "#{file}#{ext_in} ---> ._#{file}#{ext_out}"
+  cmd = "rsvg-convert \"#{file_in}\" -o \"#{file_out}\""
+
+  if system cmd
+    puts "OK - " + puts_string
+  else
+    puts "!!! ERROR - " + puts_string
+    errors << puts_string
+  end
+end
+
+
+puts "\nERRORS - #{errors.size}\n" if errors.size > 0
+

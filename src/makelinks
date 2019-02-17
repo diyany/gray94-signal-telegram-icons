@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+
+names_single = [
+  ['._default_22.png', 'iconmute_22_0.png'],
+]
+
+
+names = [
+  ['._iconmute_22.png', 'iconmute_22_'],
+  ['._icon_22.png', 'icon_22_'],
+]
+
+
+Dir.chdir("../ticons")
+
+
+names_single.each do |file|
+  next if File.exist?(file[1])
+  puts "#{file[0]} <--- #{file[1]}"
+  File.symlink(file[0], file[1])
+end
+
+
+names.each do |file|
+  file_in = file[0]
+
+  (1..999).each do |i|
+    file_out = "#{file[1]}#{i}.png"
+    next if File.exist?(file_out)
+    puts "#{file_in} <--- #{file_out}"
+    File.symlink(file_in, file_out)
+  end
+end
+
